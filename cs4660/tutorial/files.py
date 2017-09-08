@@ -6,42 +6,50 @@ class SimpleFile(object):
         self.numbers = []
         """
         TODO: reads the file by path and parse content into two
-        dimension array (numbers)
-        """
-        f = open(".cs4660/test/fixtures/array.txt")
-        data = f.read()
-        text = data.decode('utf-8')
-        array = []
-        for line in ins:
-            line = line/rstrip('\n')
-            array.append(line)
-            ins.close()
-            print array
+        dimension array (numbers)"""
+
+        sf = open(file_path, "r")
+        if sf.mode =='r':
+            fil = sf.readlines()
+            for x in fil:
+                data = x.split()
+                values = []
+                for i in data:
+                    values.append(int(i))
+                self.numbers.append(values)
+    
 
     def get_mean(self, line_number):
         """
         get_mean retrieves the mean value of the list by line_number (starts
         with zero)
         """
-        return sum(array)/2
+        values= self.numbers[line_number]
+        return sum(values)/float(len(values))
 
     def get_max(self, line_number):
         """
         get_max retrieves the maximum value of the list by line_number (starts
         with zero)
         """
-       return max(array)
+        values= self.numbers[line_number]
+        return max(values)
+    pass
 
     def get_min(self, line_number):
         """
         get_min retrieves the minimum value of the list by line_number (starts
         with zero)
         """
-       return min(array)
+        values= self.numbers[line_number]
+        return min(values)
+    pass
 
     def get_sum(self, line_number):
         """
         get_sum retrieves the sumation of the list by line_number (starts with
         zero)
         """
-       return sum(array)
+        values= self.numbers[line_number]
+        return sum(values)
+    pass
