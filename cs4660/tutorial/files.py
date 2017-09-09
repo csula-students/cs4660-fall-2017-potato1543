@@ -18,7 +18,7 @@ class SimpleFile(object):
                 for i in data:
                     values.append(int(i))
                 self.numbers.append(values)
-        sf.close();
+        sf.close()
 
     def get_mean(self, line_number):
         """
