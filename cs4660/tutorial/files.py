@@ -1,9 +1,7 @@
 """Files tests simple file read related operations"""
 from io import open
-import lists
 import files
 from tutorial import lists
-
 class SimpleFile(object):
     """SimpleFile tests using file read api to do some simple math"""
     def __init__(self, file_path):
@@ -21,7 +19,7 @@ class SimpleFile(object):
                 for i in data:
                     values.append(int(i))
                 self.numbers.append(values)
-    
+        sf.close();
 
     def get_mean(self, line_number):
         """
