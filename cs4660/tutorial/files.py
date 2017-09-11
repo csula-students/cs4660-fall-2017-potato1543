@@ -1,5 +1,6 @@
 """Files tests simple file read related operations"""
 from io import open
+
 class SimpleFile(object):
     """SimpleFile tests using file read api to do some simple math"""
     def __init__(self, file_path):
@@ -7,8 +8,7 @@ class SimpleFile(object):
         """
         TODO: reads the file by path and parse content into two
         dimension array (numbers)"""
-          # self == this
-          # the instance
+
         sf = open(file_path, "r")
         if sf.mode =='r':
             fil = sf.readlines()
