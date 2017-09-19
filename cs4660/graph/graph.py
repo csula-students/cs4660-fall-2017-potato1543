@@ -38,7 +38,7 @@ def construct_graph_from_file(graph, file_path):
     
     sf = open(file_path, "r")
     if sf.mode == 'r':
-        fil = sf.readlines().split()
+        fil = sf.readlines().splitlines()
 
     total_nodes = int(fil[0])
 
