@@ -36,7 +36,7 @@ def construct_graph_from_file(graph, file_path):
     2. for each following line (from second line to last line), add them as edge to graph
     3. return the graph    """
     
-    sf = open(file_path)
+    sf = open(file_path, "r")
     fil = sf.read().splitlines()
 
     total_nodes = int(fil[0])
@@ -143,20 +143,17 @@ class AdjacencyList(object):
              if edge.to.node in adjlist:
                  return False
              else:
-                adjacent.append(edge)
+                adjlist.append(edge)
                 return True
         adjlist = [edge.to_node]
         return True
 
     def remove_edge(self, edge):
-        if edge.from_node not in self.adjacency_list or edge.to_node not in self.adjacency_list:
-             adjlist = self.adjacency_list[edge.from_node]
-             return False
-        if edge in adjlist:
-                   adjlist.remove(edge)
-                   return True
-        else:
-                  return False
+         if edge.from_node in self.adjacency_list:
+             if edge.to_node in self.adjacency_list[edge.from_node]:
+                 self.adjacency_list[edge.from_node].remove(edge.to_node)
+                 return True
+         return False
 
 class AdjacencyMatrix(object):
     def __init__(self):
