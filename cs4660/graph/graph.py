@@ -173,17 +173,17 @@ class AdjacencyMatrix(object):
         return True if self.adjacency_matrix[node_1_index][node_2_index] != 0 else False
 
     def neighbors(self, node):
-        if node not in self.nodes:
-            return False
-        node_index = self.__get_node_index(node)
-        del self.nodes[node_index]
-        #update matrix
-        for existing_weights in self.adjacency_matrix:
-         #delete column that other nodes connected to removed note
-         del existing_weights[node_index]
-         #delete row that contains removed node    
-         del self.adjacency_matrix[node_index]
-         return True
+        neighbors = []
+        index = self.__get_node_index(node)
+
+        for i in self.nodes:
+            neighbor_node = self.__get_node_index(i)
+            if (self.adjacency_matrix[index][neighbor_node] != 0 ):
+                neighbors.append(i)
+
+        sorted_neighbors = sorted(neighbors, key=lambda node: node.data)
+
+        return sorted_neighbors
 
     def add_node(self, node):
         if node in self.nodes:
@@ -204,18 +204,20 @@ class AdjacencyMatrix(object):
             self.adjacency_matrix.pop(index)
             for i in range(len(self.adjacency_matrix)):
                 self.adjacency_matrix[i].pop(index)
-                return True
+            return True
         else:
             return False
              
     def add_edge(self, edge):
-        from_node_index = self.__get_node_index(edge.from_node)
-        to_node_index = self.__get_node_index(edge.to_node)
-        if edge.to_node not in self.nodes or edge.from_node not in self.nodes or self.adjacency_matrix[from_node_index][to_node_index] > 0:
-             return False
-        self.adjacency_matrix[from_node_index][to_node_index] = edge.weight
-        return True
+        from_node = self.__get_node_index(edge.from_node)
+        to_node = self.__get_node_index(edge.to_node)
 
+        if(self.adjacency_matrix[from_node][to_node] != edge.weight):
+            self.adjacency_matrix[from_node][to_node] = edge.weight
+            return True
+
+        else:
+            return False
     def remove_edge(self, edge):
         if edge.from_node not in self.nodes or edge.to_node not in self.nodes:
             return False
