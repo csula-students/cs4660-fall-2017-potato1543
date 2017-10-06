@@ -2,7 +2,7 @@
 
 import unittest
 
-#from tutorial import lists
+from tutorial import lists
 from tutorial import files
 
 class ListTestCase(unittest.TestCase):
