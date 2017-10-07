@@ -7,6 +7,8 @@ class SimpleFile(object):
         """
         TODO: reads the file by path and parse content into two
         dimension array (numbers)"""
+          # self == this
+          # the instance
         sf = open(file_path, "r")
         if sf.mode =='r':
             fil = sf.readlines()
