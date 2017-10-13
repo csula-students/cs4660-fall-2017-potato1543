@@ -28,7 +28,7 @@ def construct_graph_from_file(graph, file_path):
     """
     TODO: read content from file_path, then add nodes and edges to graph object
 
-    note that grpah object will be either of AdjacencyList, AdjacencyMatrix or ObjectOriented
+    note that graph object will be either of AdjacencyList, AdjacencyMatrix or ObjectOriented
 
     In example, you will need to do something similar to following:
 
@@ -99,9 +99,10 @@ class AdjacencyList(object):
         self.adjacency_list = {}
 
     def adjacent(self, node_1, node_2):
-       for i in self.adjacency_list[node_1]:
+        for i in self.adjacency_list[node_1]:
             if i.to_node == node_2:
                 return True
+            
         return False
 
     def neighbors(self, node):
@@ -110,16 +111,15 @@ class AdjacencyList(object):
         else:
             return list(map((lambda edge: edge.to_node), self.adjacency_list[node]))
 
-  def add_node(self, node):
+    def add_node(self, node):
         if node in self.adjacency_list:
-           return False
+            return False
         else:
             self.adjacency_list[node] = []
             return True
 
             
     def remove_node(self, node):
-        
         if node in self.adjacency_list:
             for i in self.adjacency_list.keys():
                 adj_list = self.adjacency_list[i]
@@ -137,25 +137,28 @@ class AdjacencyList(object):
             if e == edge:
                 return False
 
-        if adj_list == {}:
-            self.adjacency_list[edge.from_node] = edge
-
+        if edge in self.adjacency_list[edge.from_node]:
+            return False
         else:
             self.adjacency_list[edge.from_node].append(edge)
-
-        return True
+            return True
 
     def remove_edge(self, edge):
         adj_list = self.adjacency_list[edge.from_node]
-
+      #  if edge.from_node not in self.adjacency_list or edge.to_node not in self.adjacency_list:
+       #     return False
         if edge not in adj_list:
             return False
-
         else:
             adj_list.remove(edge)
             return True
     def distance(self, node_1, node_2):
-        pass
+        if node_1 in self.adjacency_list:
+            for edge in self.adjacency_list:
+                if edge.to_node == node_2:
+                    return edge.weight
+        return None
+
 class AdjacencyMatrix(object):
     def __init__(self):
         # adjacency_matrix should be a two dimensions array of numbers that
@@ -221,15 +224,17 @@ class AdjacencyMatrix(object):
     def remove_edge(self, edge):
         if edge.from_node not in self.nodes or edge.to_node not in self.nodes:
             return False
-        node_1_index = self.__get_node_index(edge.from_node)
-        node_2_index = self.__get_node_index(edge.to_node)
-        if self.adjacency_matrix[node_1_index][node_2_index] == 0:
+        node_1 = self.__get_node_index(edge.from_node)
+        node_2 = self.__get_node_index(edge.to_node)
+        if self.adjacency_matrix[node_1][node_2] == 0:
             return False #edge not exist
-        self.adjacency_matrix[node_1_index][node_2_index] = 0
+        self.adjacency_matrix[node_1][node_2] = 0
         return True
 
     def distance(self, node_1, node_2):
-        pass
+        if node_1 not in self.nodes or to_node not in self.nodes:
+            return None
+        return self.adjacency_matrix[self.__get_node_index(node_1)][self.__get_node_index(to_node)]
 
     def __get_node_index(self, node):
         """helper method to find node index"""
@@ -286,7 +291,10 @@ class ObjectOriented(object):
              return False
 
     def distance(self, node_1, node_2):
-        pass
+        for edge in self.edges:
+            if edge.from_node == from_node and edge.to_node == to_node:
+                return edge.weight
+        return None
 
 
 #main method to see what is printing

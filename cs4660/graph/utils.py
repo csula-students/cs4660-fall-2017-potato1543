@@ -3,6 +3,7 @@ utils package is for some quick utility methods
 
 such as parsing
 """
+import graph as G
 
 class Tile(object):
     """Node represents basic unit of graph"""
@@ -37,7 +38,54 @@ def parse_grid_file(graph, file_path):
     """
     # TODO: read the filepaht line by line to construct nodes & edges
 
-    # TODO: for each node/edge above, add it to graph
+    fil = open(file_path)
+
+    rows =[]
+    for line in fil:
+        if line[0] == 'x':
+            continue
+        non_borders = line[1:-2]
+        rows.append([non_borders[i:i+2] for i in range(0, len(non_borders), 2)])
+
+        # fil.close()
+    nodes = []
+    edges = []
+
+    # row index: y
+    y = 0
+    for row in rows:
+        x = 0
+    # x is the column index
+    for block in row:
+        if block == '##':
+            x += 1
+            continue
+            here_node = g.Node(Tile(x, y, block))
+            nodes.append(here_node)
+
+            adjacents = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+            for adjacent in adjacents:
+                if adjacent[0] >= len(rows[0]) or adjacent[0] < 0 or adjacent[1] >= len(rows) or adjacent[1] < 0:
+                    continue
+                    dest_block = rows[adjacent[1]][adjacent[0]]
+                    if dest_block == '##':
+                     continue
+                     to_node = g.Node(Tile(adjacent[0], adjacent[1], dest_block))
+                     edges.append(g.Edge(here_node, to_node, 1))
+            x += 1
+        y += 1
+ 
+    for node in nodes:
+        status = graph.add_node(node)
+        if not status:
+            print('Failed to add grid node ' + str(node))
+    for edge in edges:
+        status = graph.add_edge(edge)
+        if not status:
+            print('Failed to add grid edge  ' + str(edge))
+ 
+    
+  # TODO: for each node/edge above, add it to graph
 
     return graph
 
@@ -47,4 +95,18 @@ def convert_edge_to_grid_actions(edges):
 
     e.g. Edge(Node(Tile(1, 2), Tile(2, 2), 1)) => "S"
     """
-    return ""
+    if not edges:
+        return ""
+    
+    actions = []
+    for edge in edges:
+        if edge.from_node.data.x > edge.to_node.data.x:
+            actions.append('W')
+        elif edge.from_node.data.x < edge.to_node.data.x:
+            actions.append('E')
+        elif edge.from_node.data.y > edge.to_node.data.y:
+            actions.append('N')
+        else:
+            actions.append('S')
+    
+    return ''.join(actions)
