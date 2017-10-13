@@ -295,6 +295,3 @@ class ObjectOriented(object):
             if edge.from_node == from_node and edge.to_node == to_node:
                 return edge.weight
         return None
-
-
-#main method to see what is printing

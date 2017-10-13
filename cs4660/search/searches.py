@@ -2,7 +2,7 @@
 Searches module defines all different search algorithms
 """
 import Queue as Q
-
+import graph as G
 
 def bfs(graph, initial_node, dest_node):
     """
@@ -24,7 +24,7 @@ def dfs(graph, initial_node, dest_node):
     current_node = dest_node
     while current_node != initial_node:
         next_node = parents[current_node]
-        path = [g.Edge(next_node, current_node, graph.distance(next_node, current_node))] + path
+        path = [G.edge(next_node, current_node, graph.distance(next_node, current_node))] + path
         current_node = next_node
 
     return path
