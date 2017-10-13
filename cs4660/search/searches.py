@@ -35,7 +35,7 @@ def dfs_recursion(graph, current, discovered, parents):
              continue
          discovered[neighbor] = True
          parents[neighbor] = current
-         dfs_rec(graph, neighbor, discovered, parents)
+         dfs_recursion(graph, neighbor, discovered, parents)
 
 def dijkstra_search(graph, initial_node, dest_node):
     """
