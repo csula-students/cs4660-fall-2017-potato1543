@@ -79,3 +79,14 @@ if __name__ == "__main__":
     g.bfs(g,empty_room)
     print(empty_room)
     print(transition_state(empty_room['id'], empty_room['neighbors'][0]['id']))
+
+
+# i wasnt able to complete the quiz because I didnt understand how we would complete the searches without the test case
+# i understand we have to implement the 2 search algoritms but i am not sure how the graph i made on the homework is suppose
+# to help when linking the 2 rooms together.
+# I did what I could in the time
+
+# I know the bfs looks through the nodes one by one starting with the root node
+# dijik still trying to completely understand
+
+# I still tried my beset to implement what I understood
