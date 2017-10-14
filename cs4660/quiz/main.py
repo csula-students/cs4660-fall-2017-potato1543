@@ -89,4 +89,4 @@ if __name__ == "__main__":
 # I know the bfs looks through the nodes one by one starting with the root node
 # dijik still trying to completely understand
 
-# I still tried my beset to implement what I understood
+# I still tried my best to implement what I understood
