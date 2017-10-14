@@ -4,32 +4,107 @@ Use path finding algorithm to find your way through dark dungeon!
 Tecchnical detail wise, you will need to find path from node 7f3dc077574c013d98b2de8f735058b4
 to f1f131f647621a4be7c71292e79613f9
 TODO: implement BFS """
-
-def bfs(graph,initial_node):
-    dest_node = f1f131f647621a4be7c71292e79613f9
-    #keeps track of the visited nodes
-    visited = []
-    #keep track of nodes to be checked
-    queue = [initial_node]
-
-    #keep looping until there are nodes still to be checked
-    while queue:
-        #pop first node from queue
-        node = queue.pop(0)
-        if node not in dest_node:
-            return True
-        
-        for i in self.graph[node]:
-            if visited[i] == False:
-                queue.append(i)
-                neighbors = self.graph[node]
-                visited[i] = True
-    # If BFS completes without getting to dest_node
-    return False
-
 """
 TODO: implement Dijkstra utilizing the path with highest effect number
 """
+
+def bfs(graph,initial_id,dest_id):
+     distance = {}
+     parents = {}
+     edges = {}
+ 
+     q = []
+     q.append((0, initial_id))
+ 
+     distance[initial_id] = 0
+     while len(q) > 0:
+        u = get_state(q.pop()[1])
+        neighbors = u['neighbors']
+ 
+        for i in range(len(neighbors)):
+            v = neighbors[i]
+            if v['id'] not in distance:
+                edge = transition_state(u['id'], v['id'])
+                edges[v['id']] = edge
+                distance[v['id']] = distance[u['id']] + 1
+                parents[v['id']] = u['id']
+ 
+                # continue to enqueue if we haven't reached the end
+                if v['id'] != dest_id:
+                    q.append((distance[v['id']], v['id']))
+ 
+         # sort priority
+        q = sorted(q, key=lambda x:x[0])
+        q.reverse()
+        # actions is a list of edges
+        actions = []
+        node_id = dest_id
+
+        if node_id in parents:
+            actions.append(edges[node_id])
+            node_id = parents[node_id]
+            
+            # reverse the list of edges
+            actions.reverse()
+            
+            return actions
+
+
+def Dikjstra(graph,initial_id,dest_id):
+    distance = {}
+    previous = {}
+    edges = {}
+ 
+    distance[initial_id] = 0
+ 
+    q = []
+    q.append((0, initial_id))
+    visited = []
+    while len(q) > 0:
+        u = get_state(q.pop()[1])
+        visited.append(u['id'])
+        neighbors = u['neighbors']
+ 
+        for i in range(len(neighbors)):
+            v = neighbors[i]
+            edge = transition_state(u['id'], v['id'])
+            alt = distance[u['id']] + edge['event']['effect']
+ 
+            if v['id'] not in visited and (v['id'] not in distance or alt > distance[v['id']]):
+                # reassign priority
+                if v['id'] in distance:
+                    q.remove((distance[v['id']], v['id']))
+                # enqueue v for further evaluations
+                q.append((alt, v['id']))
+ 
+                distance[v['id']] = alt
+                previous[v['id']] = u['id']
+                edges[v['id']] = edge
+ 
+        # sort priority
+        q = sorted(q, key=lambda x:x[0])
+     
+    actions = []
+    node_id = dest_id
+ 
+    while node_id in previous:
+        actions.append(edges[node_id])
+        node_id = previous[node_id]
+ 
+    actions.reverse()
+ 
+    return actions
+
+def print_actions(actions,initial_id):
+    prev_id = initial_id
+    total = 0
+    for i in range(len(actions)):
+        prev_node = get_state(prev_id)
+        next_id = actions[i]['id']
+        total += actions[i]['event']['effect']
+        print("%s(%s):%s(%s):%i" % (prev_node['location']['name'], prev_id, actions[i]['action'], actions[i]['id'], actions[i]['event']['effect']))
+        prev_id = next_id
+    print("\nTotal HP: %i" % total)
 
 import json
 import codecs
@@ -74,19 +149,20 @@ def __json_request(target_url, body):
 
 if __name__ == "__main__":
     # Your code starts here
-     g = self.graph
+    initial_id = '7f3dc077574c013d98b2de8f735058b4'
+    dest_id = 'f1f131f647621a4be7c71292e79613f9'
     empty_room = get_state('7f3dc077574c013d98b2de8f735058b4')
-    g.bfs(g,empty_room)
     print(empty_room)
     print(transition_state(empty_room['id'], empty_room['neighbors'][0]['id']))
+    
+    #Testing the BFS 
+    actions = bfs(graph,initial_id,dest_id)
+    print("\n")
+    print("BFS:")
+    print_actions(actions,initial_id)
 
-
-# i wasnt able to complete the quiz because I didnt understand how we would complete the searches without the test case
-# i understand we have to implement the 2 search algoritms but i am not sure how the graph i made on the homework is suppose
-# to help when linking the 2 rooms together.
-# I did what I could in the time
-
-# I know the bfs looks through the nodes one by one starting with the root node
-# dijik still trying to completely understand
-
-# I still tried my best to implement what I understood
+    #Testing Dikjstra
+    actions = Dikjstra(graph,initial_id,dest_id)
+    print("\n")
+    print("Dikjstra:")
+    print_actions(actions,initial_id)
