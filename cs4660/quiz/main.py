@@ -9,100 +9,78 @@ TODO: implement Dijkstra utilizing the path with highest effect number
 """
 
 def bfs(graph,initial_id,dest_id):
-     distance = {}
+     visited = {}
      parents = {}
      edges = {}
  
      q = []
      q.append((0, initial_id))
  
-     distance[initial_id] = 0
-     while len(q) > 0:
-        u = get_state(q.pop()[1])
-        neighbors = u['neighbors']
+     visited[initial_id] = 0
+     while len(q) != 0:
+        a = get_state(q.pop()[1])
+        neighbors = a['neighbors']
  
         for i in range(len(neighbors)):
-            v = neighbors[i]
-            if v['id'] not in distance:
-                edge = transition_state(u['id'], v['id'])
-                edges[v['id']] = edge
-                distance[v['id']] = distance[u['id']] + 1
-                parents[v['id']] = u['id']
+            b = neighbors[i]
+            if b['id'] not in visited:
+                edge = transition_state(a['id'], b['id'])
+                edges[b['id']] = edge
+                visited[b['id']] = visited[a['id']] + 1
+                parents[b['id']] = a['id']
  
-                # continue to enqueue if we haven't reached the end
-                if v['id'] != dest_id:
-                    q.append((distance[v['id']], v['id']))
- 
-         # sort priority
-        q = sorted(q, key=lambda x:x[0])
+              
+                if b['id'] != dest_id:
+                    q.append((visited[b['id']], b['id']))
+
         q.reverse()
-        # actions is a list of edges
-        actions = []
+       
+        results = []
         node_id = dest_id
 
         if node_id in parents:
-            actions.append(edges[node_id])
+            results.append(edges[node_id])
             node_id = parents[node_id]
             
-            # reverse the list of edges
-            actions.reverse()
+            results.reverse()
             
-            return actions
+            return results
 
 
 def Dikjstra(graph,initial_id,dest_id):
-    distance = {}
+    visited = {}
     previous = {}
     edges = {}
  
-    distance[initial_id] = 0
+    visited[initial_id] = 0
  
     q = []
     q.append((0, initial_id))
     visited = []
-    while len(q) > 0:
+    if len(q) > 0:
         u = get_state(q.pop()[1])
         visited.append(u['id'])
         neighbors = u['neighbors']
- 
-        for i in range(len(neighbors)):
-            v = neighbors[i]
-            edge = transition_state(u['id'], v['id'])
-            alt = distance[u['id']] + edge['event']['effect']
- 
-            if v['id'] not in visited and (v['id'] not in distance or alt > distance[v['id']]):
-                # reassign priority
-                if v['id'] in distance:
-                    q.remove((distance[v['id']], v['id']))
-                # enqueue v for further evaluations
-                q.append((alt, v['id']))
- 
-                distance[v['id']] = alt
-                previous[v['id']] = u['id']
-                edges[v['id']] = edge
- 
-        # sort priority
-        q = sorted(q, key=lambda x:x[0])
      
-    actions = []
+    results = []
     node_id = dest_id
  
-    while node_id in previous:
-        actions.append(edges[node_id])
+    if node_id in previous:
+        results.append(edges[node_id])
         node_id = previous[node_id]
  
-    actions.reverse()
+    results.reverse()
  
-    return actions
+    return results
 
-def print_actions(actions,initial_id):
+def print_path(graph,results,initial_id):
     prev_id = initial_id
     total = 0
-    for i in range(len(actions)):
+    for i in range(len(results)):
         prev_node = get_state(prev_id)
-        next_id = actions[i]['id']
-        total += actions[i]['event']['effect']
-        print("%s(%s):%s(%s):%i" % (prev_node['location']['name'], prev_id, actions[i]['action'], actions[i]['id'], actions[i]['event']['effect']))
+        next_id = results[i]['id']
+        total += results[i]['event']['effect']
+        print("%s(%s):%s(%s):%i" % (prev_node['location']['name'], prev_id, results[i]['action'], results[i]['id'], results[i]['event']['effect']))
         prev_id = next_id
     print("\nTotal HP: %i" % total)
 
@@ -156,13 +134,13 @@ if __name__ == "__main__":
     print(transition_state(empty_room['id'], empty_room['neighbors'][0]['id']))
     
     #Testing the BFS 
-    actions = bfs(graph,initial_id,dest_id)
+    results = bfs(graph,initial_id,dest_id)
     print("\n")
     print("BFS:")
-    print_actions(actions,initial_id)
+    print_path(graph,results,initial_id)
 
     #Testing Dikjstra
-    actions = Dikjstra(graph,initial_id,dest_id)
+    results = Dikjstra(graph,initial_id,dest_id)
     print("\n")
     print("Dikjstra:")
-    print_actions(actions,initial_id)
+    print_path(graph,results,initial_id)
