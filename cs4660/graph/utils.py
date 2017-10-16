@@ -3,9 +3,9 @@ utils package is for some quick utility methods
 
 such as parsing
 """
-from graph import edge
-from graph import node
-from graph import graph
+import edge
+import node
+import graph
 
 class Tile(object):
     """Node represents basic unit of graph"""
@@ -53,11 +53,10 @@ def parse_grid_file(graph, file_path):
     nodes = []
     edges = []
 
-    # row index: y
     y = 0
     for row in rows:
         x = 0
-    # x is the column index
+    
     for block in row:
         if block == '##':
             x += 1

@@ -15,26 +15,12 @@ def bfs(graph, initial_node, dest_node):
     edge_to = {}
 
     q = []
-    q.append((0, initial_node));
+    q.append((0, initial_node))
 
     distance_of[initial_node] = 0
 
-    while len(q) > 0:
+    if len(q) > 0:
         u = q.pop()[1]
-
-        for node in graph.neighbors(u):
-            if node not in distance_of:
-                edge_to[node] = graph.distance(u, node)
-                distance_of[node] = distance_of[u] + edge_to[node].weight
-                parent_of[node] = u
-
-                # continue to enqueue if we haven't reached the end
-                if node != dest_node:
-                    q.append((distance_of[node], node))
-
-        # sort priority
-        q = sorted(q, key=lambda x:x[0])
-        q.reverse()
 
     # actions is a list of edges
     actions = []
