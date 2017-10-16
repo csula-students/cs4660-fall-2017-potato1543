@@ -3,8 +3,8 @@ utils package is for some quick utility methods
 
 such as parsing
 """
-import edge
-import node
+#import edge
+#import node
 import graph
 
 class Tile(object):
