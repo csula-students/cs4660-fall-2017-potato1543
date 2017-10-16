@@ -10,14 +10,14 @@ def bfs(graph, initial_node, dest_node):
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-    distance_of = {}
-    parent_of = {}
-    edge_to = {}
+    distance = {}
+    parent = {}
+    edge = {}
 
     q = []
     q.append((0, initial_node))
 
-    distance_of[initial_node] = 0
+    distance[initial_node] = 0
 
     if len(q) > 0:
         u = q.pop()[1]
@@ -26,9 +26,9 @@ def bfs(graph, initial_node, dest_node):
     actions = []
     end_node = dest_node
 
-    while end_node in parent_of:
+    while end_node in parent:
         actions.append(edge_to[end_node])
-        end_node = parent_of[end_node]
+        end_node = parent[end_node]
 
     # reverse the list of edges
     actions.reverse()
